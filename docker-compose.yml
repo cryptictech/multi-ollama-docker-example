@@ -1,0 +1,56 @@
+version: "3.9"
+
+services:
+  litellm:
+    container_name: "litellm-proxy"
+    image: "ghcr.io/berriai/litellm:main-latest"
+    volumes:
+      - ./litellm-default.yaml:/app/test.yaml # Mount the local configuration file
+    # You can change the port or number of workers as per your requirements or pass any new supported CLI augument. Make sure the port passed here matches with the container port defined above in `ports` value
+    command: [ "--config", "/app/test.yaml", "--port", "8000" ]
+    ports:
+      - "8000:8000"
+    networks:
+      - LLMNet
+  ollama-codellama:
+    container_name: "ollama-codellama"
+    image: "ollama-codellama"
+    build:
+      dockerfile: "./Dockerfile"
+    ports:
+      - "8001:11434"
+    volumes:
+      - codellama:/usr/share/ollama/.ollama/models
+    networks:
+      - LLMNet
+  ollama-mistral:
+    container_name: "ollama-mistral"
+    image: "ollama-mistral"
+    build:
+      dockerfile: "./Dockerfile"
+    ports:
+      - "8002:11434"
+    volumes:
+      - mistral:/usr/share/ollama/.ollama/models
+    networks:
+      - LLMNet
+  ollama-phi:
+    container_name: "ollama-phi"
+    image: "ollama-phi"
+    build:
+      dockerfile: "./Dockerfile"
+    ports:
+      - "8003:11434"
+    volumes:
+      - phi:/user/share/ollama/.ollama/models
+    networks:
+      - LLMNet
+
+volumes:
+  mistral:
+  codellama:
+  phi:
+
+networks:
+  LLMNet:
+
