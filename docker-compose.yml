@@ -14,9 +14,8 @@ services:
       - LLMNet
   ollama-codellama:
     container_name: "ollama-codellama"
-    image: "ollama-codellama"
-    build:
-      dockerfile: "./Dockerfile"
+    image: "ollama/ollama"
+    command: ["serve"]
     ports:
       - "8001:11434"
     volumes:
@@ -25,26 +24,25 @@ services:
       - LLMNet
   ollama-mistral:
     container_name: "ollama-mistral"
-    image: "ollama-mistral"
-    build:
-      dockerfile: "./Dockerfile"
+    image: "ollama/ollama"
+    command: ["serve"]
     ports:
       - "8002:11434"
     volumes:
       - mistral:/usr/share/ollama/.ollama/models
     networks:
       - LLMNet
-  ollama-phi:
-    container_name: "ollama-phi"
-    image: "ollama-phi"
-    build:
-      dockerfile: "./Dockerfile"
-    ports:
-      - "8003:11434"
-    volumes:
-      - phi:/user/share/ollama/.ollama/models
-    networks:
-      - LLMNet
+  # ollama-phi:
+  #   container_name: "ollama-phi"
+  #   image: "ollama-phi"
+  #   build:
+  #     dockerfile: "./Dockerfile"
+  #   ports:
+  #     - "8003:11434"
+  #   volumes:
+  #     - phi:/user/share/ollama/.ollama/models
+  #   networks:
+  #     - LLMNet
 
 volumes:
   mistral:
